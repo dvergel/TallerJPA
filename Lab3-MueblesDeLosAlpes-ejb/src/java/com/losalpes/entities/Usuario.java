@@ -1,388 +1,260 @@
-/**
- * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * $Id$ Usuario.java
- * Universidad de los Andes (Bogotá - Colombia)
- * Departamento de Ingeniería de Sistemas y Computación
- * Licenciado bajo el esquema Academic Free License version 3.0
- *
- * Ejercicio: Muebles de los Alpes
- * 
- * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
-
 package com.losalpes.entities;
 
-import java.util.ArrayList;
+import java.io.Serializable;
+import java.util.List;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * Clase que representa un usuario del sistema
- * 
+ *
+ * @author de.vergel10
  */
-public class Usuario
-{
-
-    //-----------------------------------------------------------
-    // Atributos
-    //-----------------------------------------------------------
-
-    /**
-     * Nombre del usuario
-     */
+@Entity
+@Table(name = "USUARIO", catalog = "", schema = "CSOF5302051520")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u"),
+    @NamedQuery(name = "Usuario.findById", query = "SELECT u FROM Usuario u WHERE u.id = :id"),
+    @NamedQuery(name = "Usuario.findByLogin", query = "SELECT u FROM Usuario u WHERE u.login = :login"),
+    @NamedQuery(name = "Usuario.findByContrasena", query = "SELECT u FROM Usuario u WHERE u.contrasena = :contrasena"),
+    @NamedQuery(name = "Usuario.findByTipoUsuario", query = "SELECT u FROM Usuario u WHERE u.tipoUsuario = :tipoUsuario"),
+    @NamedQuery(name = "Usuario.findByNombreCompleto", query = "SELECT u FROM Usuario u WHERE u.nombreCompleto = :nombreCompleto"),
+    @NamedQuery(name = "Usuario.findByDocumento", query = "SELECT u FROM Usuario u WHERE u.documento = :documento"),
+    @NamedQuery(name = "Usuario.findByTipoDocumento", query = "SELECT u FROM Usuario u WHERE u.tipoDocumento = :tipoDocumento"),
+    @NamedQuery(name = "Usuario.findByTelefonoLocal", query = "SELECT u FROM Usuario u WHERE u.telefonoLocal = :telefonoLocal"),
+    @NamedQuery(name = "Usuario.findByTelefonoCelular", query = "SELECT u FROM Usuario u WHERE u.telefonoCelular = :telefonoCelular"),
+    @NamedQuery(name = "Usuario.findByCiudadId", query = "SELECT u FROM Usuario u WHERE u.ciudadId = :ciudadId"),
+    @NamedQuery(name = "Usuario.findByDireccion", query = "SELECT u FROM Usuario u WHERE u.direccion = :direccion"),
+    @NamedQuery(name = "Usuario.findByProfesion", query = "SELECT u FROM Usuario u WHERE u.profesion = :profesion"),
+    @NamedQuery(name = "Usuario.findByCorreo", query = "SELECT u FROM Usuario u WHERE u.correo = :correo"),
+    @NamedQuery(name = "Usuario.findBySeleccion", query = "SELECT u FROM Usuario u WHERE u.seleccion = :seleccion")})
+public class Usuario implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID")
+    private Short id;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "LOGIN")
     private String login;
-
-    /**
-     * Contraseña del usuario
-     */
-    private String contraseña;
-
-    /**
-     * Tipo de usuario
-     */
-    private TipoUsuario tipoUsuario;
-
-    /**
-     * Nombres y apellidos del usuario
-     */
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "CONTRASENA")
+    private String contrasena;
+    @Size(max = 50)
+    @Column(name = "TIPO_USUARIO")
+    private String tipoUsuario;
+    @Size(max = 50)
+    @Column(name = "NOMBRE_COMPLETO")
     private String nombreCompleto;
-
-    /**
-     * Número de documento de identidad
-     */
-    private long documento;
-
-    /**
-     * Tipo de documento
-     */
-    private TipoDocumento tipoDocumento;
-
-    /**
-     * Número del teléfono local
-     */
-    private long telefonoLocal;
-
-    /*
-     * Número del teléfono celular
-     */
-    private long telefonoCelular;
-
-    /**
-     * Ciudad de residencia del usuario
-     */
-    private Ciudad ciudad;
-
-    /**
-     * Dirección de residencia del usuario
-     */
+    @Column(name = "DOCUMENTO")
+    private Long documento;
+    @Size(max = 50)
+    @Column(name = "TIPO_DOCUMENTO")
+    private String tipoDocumento;
+    @Column(name = "TELEFONO_LOCAL")
+    private Long telefonoLocal;
+    @Column(name = "TELEFONO_CELULAR")
+    private Long telefonoCelular;
+    @Column(name = "CIUDAD_ID")
+    private Short ciudadId;
+    @Size(max = 50)
+    @Column(name = "DIRECCION")
     private String direccion;
-
-    /**
-     * Profesión del usuario
-     */
-    private Profesion profesion;
-
-    /**
-     * Correo electrónico del usuario
-     */
+    @Size(max = 50)
+    @Column(name = "PROFESION")
+    private String profesion;
+    @Size(max = 50)
+    @Column(name = "CORREO")
     private String correo;
+    @Column(name = "SELECCION")
+    private Short seleccion;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario", fetch = FetchType.LAZY)
+    private List<RegistroVenta> registroVentaList;
 
-    /**
-     * Indica si el mueble fue seleccionado
-     */
-    private boolean seleccion;
-
-    /**
-     * Devuelve un lista con todos las compras del usuario
-     */
-    private ArrayList<RegistroVenta>compras;
-
-    //-----------------------------------------------------------
-    // Constructores
-    //-----------------------------------------------------------
-
-    /**
-     * Constructor de la clase sin argumentos
-     */
-    public Usuario()
-    {
-
+    public Usuario() {
     }
 
-    /**
-     * Constructor de la clase con argumentos
-     * @param nombre Nombre del usuario
-     * @param contraseña Constraseña del usuario
-     * @param tipo Tipo de usuario
-     */
-    public Usuario(String login, String contraseña, TipoUsuario tipoUsuario)
-    {
+    public Usuario(Short id) {
+        this.id = id;
+    }
+
+    public Usuario(Short id, String login, String contrasena) {
+        this.id = id;
         this.login = login;
-        this.contraseña = contraseña;
-        this.tipoUsuario = tipoUsuario;
-        this.compras=new ArrayList<RegistroVenta>();
+        this.contrasena = contrasena;
     }
 
-    //-----------------------------------------------------------
-    // Getters y setters
-    //-----------------------------------------------------------
+    public Short getId() {
+        return id;
+    }
 
-    /**
-     * Devuelve el nombre de usuario
-     * @return nombre Nombre del usuario
-     */
-    public String getLogin()
-    {
+    public void setId(Short id) {
+        this.id = id;
+    }
+
+    public String getLogin() {
         return login;
     }
 
-    /**
-     * Modifica el nombre del usuario
-     * @param nombre Nuevo nombre de usuario
-     */
-    public void setLogin(String nombre)
-    {
-        this.login = nombre;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
-    /**
-     * Devuelve la contraseña del usuario
-     * @return contraseña Contraseña del usuario
-     */
-    public String getContraseña()
-    {
-        return contraseña;
+    public String getContrasena() {
+        return contrasena;
     }
 
-    /**
-     * Modifica la contraseña del usuario
-     * @param contraseña Nueva contraseña
-     */
-    public void setContraseña(String contraseña)
-    {
-        this.contraseña = contraseña;
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
     }
 
-    /**
-     * Devuelve el tipo de usuario
-     * @return tipo Tipo de usuario
-     */
-    public TipoUsuario getTipoUsuario()
-    {
+    public String getTipoUsuario() {
         return tipoUsuario;
     }
 
-    /**
-     * Modifica el tipo de usuario
-     * @param tipo Nuevo tipo de usuario
-     */
-    public void setTipoUsuario(TipoUsuario tipoUsuario)
-    {
+    public void setTipoUsuario(String tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
     }
 
-    /**
-     * Devuelve la ciudad de residencia del usuario
-     * @return ciudad Ciudad de residencia del cliente
-     */
-    public Ciudad getCiudad()
-    {
-        return ciudad;
-    }
-
-    /**
-     * Modifica la ciudad de residencia del usuario
-     * @param ciudad Nueva ciudad de residencia
-     */
-    public void setCiudad(Ciudad ciudad)
-    {
-        this.ciudad = ciudad;
-    }
-
-    /**
-     * Devuelve el correo electrónico del usuario
-     * @return correo Correo electrónico del usuario
-     */
-    public String getCorreo()
-    {
-        return correo;
-    }
-
-    /**
-     * Modifica el correo electrónico del usuario
-     * @param correo Nuevo correo electrónico
-     */
-    public void setCorreo(String correo)
-    {
-        this.correo = correo;
-    }
-
-    /**
-     * Devuelve la dirección de residencia del usuario
-     * @return direccion Dirección de residencia del usuario
-     */
-    public String getDireccion()
-    {
-        return direccion;
-    }
-
-    /**
-     * Modifica la dirección del usuario
-     * @param direccion Nueva dirección del usuario
-     */
-    public void setDireccion(String direccion)
-    {
-        this.direccion = direccion;
-    }
-
-    /**
-     * Devuelve el número de identificación del usuario
-     * @return documento Número de identificación del usuario
-     */
-    public long getDocumento()
-    {
-        return documento;
-    }
-
-    /**
-     * Modifica el número de identificación del usuario
-     * @param documento Número de identificación
-     */
-    public void setDocumento(long documento)
-    {
-        this.documento = documento;
-    }
-
-    /**
-     * Devuelve el nombre completo del usuario
-     * @return nombreCompleto Nombre completo del usuario
-     */
-    public String getNombreCompleto()
-    {
+    public String getNombreCompleto() {
         return nombreCompleto;
     }
 
-    /**
-     * Modifica el nombre de un usuario
-     * @param nombreCompleto Nuevo nombre del usuario
-     */
-    public void setNombreCompleto(String nombreCompleto)
-    {
+    public void setNombreCompleto(String nombreCompleto) {
         this.nombreCompleto = nombreCompleto;
     }
 
-    /**
-     * Devuelve la profesión del usuario
-     * @return profesion Profesión del usuario
-     */
-    public Profesion getProfesion()
-    {
-        return profesion;
+    public Long getDocumento() {
+        return documento;
     }
 
-    /**
-     * Modifica la profesión del usuario
-     * @param profesion Nueva profesión
-     */
-    public void setProfesion(Profesion profesion)
-    {
-        this.profesion = profesion;
+    public void setDocumento(Long documento) {
+        this.documento = documento;
     }
 
-    /**
-     * Devuelve el número teléfono celular del usuario
-     * @return telefonoCelular Número de teléfono celular del cliente
-     */
-    public long getTelefonoCelular()
-    {
-        return telefonoCelular;
-    }
-
-    /**
-     * Modifica el número de teléfono celular del usuario
-     * @param telefonoCelular Nuevo número de teléfono
-     */
-    public void setTelefonoCelular(long telefonoCelular)
-    {
-        this.telefonoCelular = telefonoCelular;
-    }
-
-    /**
-     * Devuelve el número de teléfono local
-     * @return telefonoLocal Número de teléfono local
-     */
-    public long getTelefonoLocal()
-    {
-        return telefonoLocal;
-    }
-
-    /**
-     * Modifica el número del teléfono local del usuario
-     * @param telefonoLocal Nuevo número de teléfono
-     */
-    public void setTelefonoLocal(long telefonoLocal)
-    {
-        this.telefonoLocal = telefonoLocal;
-    }
-
-    /**
-     * Devuelve el tipo de documento que tiene un usuario
-     * @return tipoDocumento Tipo de documento del usuario
-     */
-    public TipoDocumento getTipoDocumento()
-    {
+    public String getTipoDocumento() {
         return tipoDocumento;
     }
 
-    /**
-     * Modifica el tipo de documento del usuario
-     * @param tipoDocumento Nuevo tipo de documento
-     */
-    public void setTipoDocumento(TipoDocumento tipoDocumento)
-    {
+    public void setTipoDocumento(String tipoDocumento) {
         this.tipoDocumento = tipoDocumento;
     }
 
-    /**
-     * Devuelve las compras realizadas por un cliente
-     * @return compras Lista con las compras realizadas por el cliente
-     */
-    public ArrayList<RegistroVenta> getCompras()
-    {
-        return compras;
+    public Long getTelefonoLocal() {
+        return telefonoLocal;
     }
 
-    /**
-     * Modifica las compras realizadas por un cliente
-     * @param compras Nueva lista de compras
-     */
-    public void setCompras(ArrayList<RegistroVenta> compras)
-    {
-        this.compras = compras;
+    public void setTelefonoLocal(Long telefonoLocal) {
+        this.telefonoLocal = telefonoLocal;
     }
 
-    /**
-     * Agrega un registro de venta al usuario
-     * @param registro Nuevo registro de venta
-     */
-    public void agregarRegistro(RegistroVenta registro)
-    {
-        compras.add(registro);
+    public Long getTelefonoCelular() {
+        return telefonoCelular;
     }
 
-    /**
-     * El usuario se encuentra seleccionado
-     * @return selección Estado del usuario
-     */
-    public boolean isSeleccion() {
+    public void setTelefonoCelular(Long telefonoCelular) {
+        this.telefonoCelular = telefonoCelular;
+    }
+
+    public Short getCiudadId() {
+        return ciudadId;
+    }
+
+    public void setCiudadId(Short ciudadId) {
+        this.ciudadId = ciudadId;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getProfesion() {
+        return profesion;
+    }
+
+    public void setProfesion(String profesion) {
+        this.profesion = profesion;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public Short getSeleccion() {
         return seleccion;
     }
 
-    /**
-     * Modifica el estado de selección del usuario
-     * @param seleccion Nuevo estado
-     */
-    public void setSeleccion(boolean seleccion)
-    {
+    public void setSeleccion(Short seleccion) {
         this.seleccion = seleccion;
     }
 
+    @XmlTransient
+    public List<RegistroVenta> getRegistroVentaList() {
+        return registroVentaList;
+    }
+
+    public void setRegistroVentaList(List<RegistroVenta> registroVentaList) {
+        this.registroVentaList = registroVentaList;
+    }
+    
+    public void agregarRegistro(RegistroVenta registro)
+    {
+        registroVentaList.add(registro);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Usuario)) {
+            return false;
+        }
+        Usuario other = (Usuario) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.losalpes.entities.Usuario[ id=" + id + " ]";
+    }
+    
 }

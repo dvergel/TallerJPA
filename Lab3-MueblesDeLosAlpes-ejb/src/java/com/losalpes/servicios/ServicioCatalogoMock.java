@@ -102,8 +102,8 @@ public class ServicioCatalogoMock implements IServicioCatalogoMockRemote,IServic
             mueble = muebles.get(i);
             if(mueble.getReferencia()==id)
             {
-                int cantidad=mueble.getCantidad();
-                mueble.setCantidad(cantidad-1);
+                short cantidad=mueble.getCantidad();
+                mueble.setCantidad(cantidad--);
                 persistencia.update(mueble);
                 break;
             }

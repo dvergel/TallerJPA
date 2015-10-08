@@ -15,6 +15,7 @@ package com.losalpes.servicios;
 import com.losalpes.entities.Mueble;
 import com.losalpes.entities.RegistroVenta;
 import com.losalpes.entities.Usuario;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.ejb.EJB;
@@ -124,7 +125,7 @@ public class ServicioCarritoMock implements IServicioCarritoMockRemote, IServici
         {
             mueble = inventario.get(i);
             Mueble editar=(Mueble) persistencia.findById(Mueble.class, mueble.getReferencia());
-            editar.setCantidad(editar.getCantidad()-mueble.getCantidad());
+            editar.setCantidad(Short.valueOf(String.valueOf(editar.getCantidad() - mueble.getCantidad())));
             RegistroVenta compra=new RegistroVenta(new Date(System.currentTimeMillis()), mueble, mueble.getCantidad(), null, usuario);
             usuario.agregarRegistro(compra);
 
@@ -208,7 +209,7 @@ public class ServicioCarritoMock implements IServicioCarritoMockRemote, IServici
         Mueble item;
         for(int i= 0, max= inventario.size(); i < max; i++){
             item = (Mueble)inventario.get(i);
-            precioTotalInventario += item.getPrecio() * item.getCantidad();
+            precioTotalInventario += Double.valueOf(String.valueOf(item.getPrecio().multiply(new BigDecimal(item.getCantidad()))));
             totalUnidades += item.getCantidad();
         }
     }

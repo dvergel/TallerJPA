@@ -63,7 +63,7 @@ public class ServicioSeguridadMock implements IServicioSeguridadMockLocal
 
         if (u != null)
         {
-            if (u.getLogin().equals(nombre) && u.getContraseña().equals(contraseña))
+            if (u.getLogin().equals(nombre) && u.getContrasena().equals(contraseña))
             {
                 return u;
             } 

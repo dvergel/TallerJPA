@@ -1,250 +1,175 @@
-/**
- * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * $Id$ Mueble.java
- * Universidad de los Andes (Bogotá - Colombia)
- * Departamento de Ingeniería de Sistemas y Computación
- * Licenciado bajo el esquema Academic Free License version 3.0
- *
- * Ejercicio: Muebles de los Alpes
- * 
- * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
-
 package com.losalpes.entities;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.List;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 /**
- * Clase que representa la información de un mueble en el sistema
- * 
+ *
+ * @author de.vergel10
  */
-public class Mueble
-{
-
-    //-----------------------------------------------------------
-    // Atributos
-    //-----------------------------------------------------------
-
-    /**
-     * Referencia que identifica el modelo del mueble en el sistema.
-     */
-    private long referencia;
-
-    /**
-     * Nombre del mueble.
-     */
+@Entity
+@Table(name = "MUEBLE", catalog = "", schema = "CSOF5302051520")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Mueble.findAll", query = "SELECT m FROM Mueble m"),
+    @NamedQuery(name = "Mueble.findById", query = "SELECT m FROM Mueble m WHERE m.id = :id"),
+    @NamedQuery(name = "Mueble.findByReferencia", query = "SELECT m FROM Mueble m WHERE m.referencia = :referencia"),
+    @NamedQuery(name = "Mueble.findByNombre", query = "SELECT m FROM Mueble m WHERE m.nombre = :nombre"),
+    @NamedQuery(name = "Mueble.findByDescripcion", query = "SELECT m FROM Mueble m WHERE m.descripcion = :descripcion"),
+    @NamedQuery(name = "Mueble.findByTipo", query = "SELECT m FROM Mueble m WHERE m.tipo = :tipo"),
+    @NamedQuery(name = "Mueble.findByPrecio", query = "SELECT m FROM Mueble m WHERE m.precio = :precio"),
+    @NamedQuery(name = "Mueble.findByImagen", query = "SELECT m FROM Mueble m WHERE m.imagen = :imagen"),
+    @NamedQuery(name = "Mueble.findByCantidad", query = "SELECT m FROM Mueble m WHERE m.cantidad = :cantidad"),
+    @NamedQuery(name = "Mueble.findBySeleccion", query = "SELECT m FROM Mueble m WHERE m.seleccion = :seleccion")})
+public class Mueble implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID")
+    private Short id;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "REFERENCIA")
+    private short referencia;
+    @Size(max = 50)
+    @Column(name = "NOMBRE")
     private String nombre;
-
-    /**
-     * Descripción del mueble.
-     */
+    @Size(max = 50)
+    @Column(name = "DESCRIPCION")
     private String descripcion;
-
-    /**
-     * Tipo de mueble.
-     */
-    private TipoMueble tipo;
-
-    /**
-     * Precio del mueble
-     */
-    private double precio;
-
-    /**
-     * Nombre de la imágen
-     */
+    @Size(max = 50)
+    @Column(name = "TIPO")
+    private String tipo;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "PRECIO")
+    private BigDecimal precio;
+    @Size(max = 50)
+    @Column(name = "IMAGEN")
     private String imagen;
+    @Column(name = "CANTIDAD")
+    private Short cantidad;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "SELECCION")
+    private short seleccion;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mueble", fetch = FetchType.LAZY)
+    private List<RegistroVenta> registroVentaList;
 
-    /**
-     * Cantidad de items
-     */
-    private int cantidad;
-
-    /**
-     * Indica si el mueble fue seleccionado
-     */
-    private boolean seleccion;
-
-    //-----------------------------------------------------------
-    // Constructores
-    //-----------------------------------------------------------
-
-    /**
-     * Constructor sin argumentos de la clase
-     */
-    public Mueble() 
-    {
-
+    public Mueble() {
     }
 
-    /**
-     * Constructor de la clase. Inicializa los atributos con los valores que ingresan por parametro.
-     * @param referencia Referencia del mueble
-     * @param nombre Nombre del mueble
-     * @param descripcion Descripión del mueble
-     * @param tipo Tipo de mueble
-     * @param cantidad Cantidad de ejemplares
-     */
-    public Mueble(long referencia, String nombre, String descripcion, TipoMueble tipo,int cantidad,String imagen,double precio)
-    {
+    public Mueble(Short id) {
+        this.id = id;
+    }
+
+    public Mueble(Short id, short referencia, short seleccion) {
+        this.id = id;
         this.referencia = referencia;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.tipo = tipo;
-        this.cantidad=cantidad;
-        this.imagen=imagen;
-        this.precio=precio;
-    }
-
-    //-----------------------------------------------------------
-    // Getters y setters
-    //-----------------------------------------------------------
-
-    /**
-     * Devuelve la descripción del mueble
-     * @return descripcion Descripción del mueble
-     */
-    public String getDescripcion()
-    {
-        return descripcion;
-    }
-
-    /**
-     * Modifica la descripción del mueble
-     * @param descripcion Nueva descripción del mueble
-     */
-    public void setDescripcion(String descripcion)
-    {
-        this.descripcion = descripcion;
-    }
-
-    /**
-     * Devuelve el nombre del mueble
-     * @return nombre Nombre del mueble
-     */
-    public String getNombre()
-    {
-        return nombre;
-    }
-
-    /**
-     * Modifica el nombre del mueble
-     * @param nombre Nuevo nombre del mueble
-     */
-    public void setNombre(String nombre)
-    {
-        this.nombre = nombre;
-    }
-
-    /**
-     * Devuelve la referencia del mueble
-     * @return referencia Referencia del mueble
-     */
-    public long getReferencia()
-    {
-        return referencia;
-    }
-
-    /**
-     * Modifica la referencia del mueble
-     * @param referencia Nueva referencia del mueble
-     */
-    public void setReferencia(long referencia) {
-        this.referencia = referencia;
-    }
-
-    /**
-     * Devuelve el tipo de mueble
-     * @return tipo Tipo de mueble
-     */
-    public TipoMueble getTipo()
-    {
-        return tipo;
-    }
-
-    /**
-     * Modifica el tipo de mueble
-     * @param tipo Nuevo tipo de mueble
-     */
-    public void setTipo(TipoMueble tipo)
-    {
-        this.tipo = tipo;
-    }
-
-    /**
-     * Devuelve el estado de selección del mueble
-     * @return seleccion Verdadero o falso
-     */
-    public boolean isSeleccion()
-    {
-        return seleccion;
-    }
-
-    /**
-     * Cambia el estado de selección de un mueble
-     * @param seleccion Nuevo estado de selección
-     */
-    public void setSeleccion(boolean seleccion)
-    {
         this.seleccion = seleccion;
     }
 
-    /**
-     * Devuelve la cantidad de ejemplares de un mueble
-     * @return cantidad Cantidad de muebles
-     */
-    public int getCantidad()
-    {
-        return cantidad;
+    public Short getId() {
+        return id;
     }
 
-    /**
-     * Modifica la cantidad de ejemplares de un mueble
-     * @param cantidad Nueva cantidad de muebles
-     */
-    public void setCantidad(int cantidad)
-    {
-        this.cantidad = cantidad;
+    public void setId(Short id) {
+        this.id = id;
     }
 
-    /**
-     * Nombre de la imagen
-     * @return imagen Nombre de la imagen
-     */
-    public String getImagen()
-    {
-        return imagen;
+    public short getReferencia() {
+        return referencia;
     }
 
-    /**
-     * Modifica el nombre de la imagen
-     * @param imagen Nuevo nombre de imagen
-     */
-    public void setImagen(String imagen)
-    {
-        this.imagen = imagen;
+    public void setReferencia(short referencia) {
+        this.referencia = referencia;
     }
 
-    /**
-     * Devuelve el precio del mueble
-     * @return precio Precio del mueble
-     */
-    public double getPrecio()
-    {
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public BigDecimal getPrecio() {
         return precio;
     }
 
-    /**
-     * Modifica el precio del mueble
-     * @param precio Nuevo precio del mueble
-     */
-    public void setPrecio(double precio)
-    {
+    public void setPrecio(BigDecimal precio) {
         this.precio = precio;
     }
 
-    //-----------------------------------------------------------
-    // Métodos
-    //-----------------------------------------------------------
+    public String getImagen() {
+        return imagen;
+    }
 
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
+
+    public Short getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(Short cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public short getSeleccion() {
+        return seleccion;
+    }
+
+    public void setSeleccion(short seleccion) {
+        this.seleccion = seleccion;
+    }
+
+    @XmlTransient
+    public List<RegistroVenta> getRegistroVentaList() {
+        return registroVentaList;
+    }
+
+    public void setRegistroVentaList(List<RegistroVenta> registroVentaList) {
+        this.registroVentaList = registroVentaList;
+    }
+    
     /**
      * Aumenta la cantidad de muebles
      */
@@ -252,7 +177,7 @@ public class Mueble
     {
         cantidad++;
     }
-
+    
     /**
      * Reduce la cantidad de muebles
      */
@@ -261,4 +186,29 @@ public class Mueble
         cantidad--;
     } 
 
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Mueble)) {
+            return false;
+        }
+        Mueble other = (Mueble) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.losalpes.entities.Mueble[ id=" + id + " ]";
+    }
+    
 }
