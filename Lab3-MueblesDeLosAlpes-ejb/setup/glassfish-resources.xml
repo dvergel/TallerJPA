@@ -6,7 +6,7 @@
         <property name="portNumber" value="1521"/>
         <property name="databaseName" value="prod"/>
         <property name="User" value="CSOF5302051520"/>
-        <property name="Password" value="mZ86zPCnFFTWc3eu  "/>
+        <property name="Password" value="mZ86zPCnFFTWc3eu"/>
         <property name="URL" value="jdbc:oracle:thin:@fn3.oracle.virtual.uniandes.edu.co:1521:prod"/>
         <property name="driverClass" value="oracle.jdbc.OracleDriver"/>
     </jdbc-connection-pool>

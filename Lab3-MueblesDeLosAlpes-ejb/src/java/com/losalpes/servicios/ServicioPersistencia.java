@@ -14,7 +14,14 @@ package com.losalpes.servicios;
 import com.losalpes.excepciones.OperacionInvalidaException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
 
 /**
  * Implementación de los servicios de persistencia
@@ -26,6 +33,8 @@ public class ServicioPersistencia implements IServicioPersistenciaMockLocal,ISer
     // Atributos
     //-----------------------------------------------------------
 
+    @PersistenceContext(unitName = "Lab3-MueblesDeLosAlpes-ejbPU")
+    private EntityManager em;
     
     /**
      * La entidad encargada de persistir en la base de datos
@@ -55,7 +64,7 @@ public class ServicioPersistencia implements IServicioPersistenciaMockLocal,ISer
     @Override
     public void create(Object obj) throws OperacionInvalidaException
     {
-       //TODO
+       getEntityManager().persist(obj);
     }
 
     /**
@@ -65,7 +74,7 @@ public class ServicioPersistencia implements IServicioPersistenciaMockLocal,ISer
     @Override
     public void update(Object obj)
     {
-       //TODO
+       getEntityManager().merge(obj);
     }
 
     /**
@@ -75,7 +84,7 @@ public class ServicioPersistencia implements IServicioPersistenciaMockLocal,ISer
     @Override
     public void delete(Object obj) throws OperacionInvalidaException
     {
-       //TODO
+       getEntityManager().remove(getEntityManager().merge(obj));
 
     }
 
@@ -87,8 +96,9 @@ public class ServicioPersistencia implements IServicioPersistenciaMockLocal,ISer
     @Override
     public List findAll(Class c)
     {
-        return null;
-        //return entityManager.createQuery("select O from " + c.getSimpleName() + " as O").getResultList();
+        final CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
+        cq.select(cq.from(c));
+        return getEntityManager().createQuery(cq).getResultList();
     }
 
     /**
@@ -100,7 +110,38 @@ public class ServicioPersistencia implements IServicioPersistenciaMockLocal,ISer
     @Override
     public Object findById(Class c, Object id)
     {
-        //TODO
-        return null;
+        return getEntityManager().find(c, id);
+    }
+    
+    @Override
+    public List<Object> findByNamedQuery(final String queryName, final Map<String, Object> params) {
+        final Query q = getEntityManager().createNamedQuery(queryName);
+
+        final Set<Entry<String, Object>> paramList = params.entrySet();
+
+        for (Entry<String, Object> entry : paramList) {
+            q.setParameter(entry.getKey(), entry.getValue());
+        }
+
+        return q.getResultList();
+
+    }
+    
+    @Override
+    public List<Object> findNamedQueryRange(final String queryName, final Map<String, Object> params,final int firstResult, final int maxResults) {
+        final Query q = getEntityManager().createNamedQuery(queryName);
+
+        final Set<Entry<String, Object>> paramList = params.entrySet();
+
+        for (Entry<String, Object> entry : paramList) {
+            q.setParameter(entry.getKey(), entry.getValue());
+        }
+        q.setMaxResults(maxResults);
+        q.setFirstResult(firstResult);
+        return q.getResultList();
+    }
+    
+    protected EntityManager getEntityManager() {
+        return em;
     }
 }

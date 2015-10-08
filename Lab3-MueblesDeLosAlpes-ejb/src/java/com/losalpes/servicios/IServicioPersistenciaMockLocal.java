@@ -13,6 +13,8 @@
 package com.losalpes.servicios;
 
 import com.losalpes.excepciones.OperacionInvalidaException;
+import java.util.List;
+import java.util.Map;
 import javax.ejb.Local;
 
 /**
@@ -55,5 +57,23 @@ public interface IServicioPersistenciaMockLocal
      * @return obj Resultado de la consulta.
      */
     public java.lang.Object findById(java.lang.Class c, java.lang.Object id);
+    
+    /**
+     * Retorna una lista de objetos buscada por named querys
+     * @param queryName nombre del namedquery
+     * @param params parametros del named query
+     * @return List<Object> Resultado de la consulta.
+     */
+    public List<Object> findByNamedQuery(final String queryName, final Map<String, Object> params);
+    
+    /**
+     * Retorna una lista de objetos buscada por named querys retornando un rango de registros
+     * @param queryName nombre del namedquery
+     * @param params parametros del named query
+     * @param firstResult numero de registro desde donde se retornanar los valores
+     * @param maxResults numero de registro
+     * @return List<Object> Resultado de la consulta.
+     */
+    public List<Object> findNamedQueryRange(final String queryName, final Map<String, Object> params,final int firstResult, final int maxResults);
     
 }
