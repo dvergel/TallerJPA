@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author de.vergel10
  */
 @Entity
-@Table(name = "VENDEDOR", catalog = "", schema = "CSOF5302051520")
+@Table(name = "VENDEDOR")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Vendedor.findAll", query = "SELECT v FROM Vendedor v"),
@@ -63,7 +63,7 @@ public class Vendedor implements Serializable {
     @Column(name = "FOTO")
     private String foto;
     @OneToMany(mappedBy = "vendedorId", fetch = FetchType.LAZY)
-    private List<Experienciavendedor> experienciavendedorList;
+    private List<ExperienciaVendedor> experienciavendedorList;
 
     public Vendedor() {
     }
@@ -129,12 +129,17 @@ public class Vendedor implements Serializable {
     }
 
     @XmlTransient
-    public List<Experienciavendedor> getExperienciavendedorList() {
+    public List<ExperienciaVendedor> getExperienciaVendedorList() {
         return experienciavendedorList;
     }
 
-    public void setExperienciavendedorList(List<Experienciavendedor> experienciavendedorList) {
+    public void setExperienciaVendedorList(List<ExperienciaVendedor> experienciavendedorList) {
         this.experienciavendedorList = experienciavendedorList;
+    }
+    
+    public void setItemExperiencia(ExperienciaVendedor experiencia)
+    {
+        this.experienciavendedorList.add(experiencia);
     }
 
     @Override

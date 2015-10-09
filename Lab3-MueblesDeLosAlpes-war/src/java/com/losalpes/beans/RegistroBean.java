@@ -127,7 +127,7 @@ public class RegistroBean implements Serializable
 
         paises.add(new Pais("Inglaterra", array3));
 
-        ciudades = pais.getCiudades();
+        ciudades = pais.getCiudadList();
     }
 
     //-----------------------------------------------------------
@@ -274,7 +274,7 @@ public class RegistroBean implements Serializable
     public void setCiudad(String nombre)
     {
         ciudad = nombre;
-        usuario.setCiudad(new Ciudad(nombre));
+        //TODO usuario.se(new Ciudad(nombre));
     }
 
     /**
@@ -306,7 +306,7 @@ public class RegistroBean implements Serializable
     public void cambioPais(ValueChangeEvent event)
     {
         setPais(event.getNewValue().toString());
-        ciudades = pais.getCiudades();
+        ciudades = pais.getCiudadList();
     }
     
     /**
@@ -319,7 +319,7 @@ public class RegistroBean implements Serializable
         {
             if(usuario.getTipoUsuario() == null)
             {
-                usuario.setTipoUsuario(TipoUsuario.Cliente);
+                usuario.setTipoUsuario(TipoUsuario.Cliente.toString());
             }
             usuarioServices.registrar(usuario);          
             mensaje = "Su cuenta ha sido creada exitosamente.";

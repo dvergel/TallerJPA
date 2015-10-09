@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author de.vergel10
  */
 @Entity
-@Table(name = "PAIS", catalog = "", schema = "CSOF5302051520")
+@Table(name = "PAIS")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Pais.findAll", query = "SELECT p FROM Pais p"),
@@ -50,6 +50,17 @@ public class Pais implements Serializable {
 
     public Pais(Short id) {
         this.id = id;
+    }
+    
+    /**
+     * Constructor de la clase (con argumentos)
+     * @param nombre Nombre del país
+     * @param ciudades Lista con las ciudades del país
+     */
+    public Pais(String nombre, List<Ciudad> ciudades)
+    {
+        this.nombre = nombre;
+        this.ciudadList = ciudades;
     }
 
     public Short getId() {

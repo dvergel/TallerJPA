@@ -88,7 +88,7 @@ public class LoginBean implements Serializable
         try
         {
             sesion = servicio.ingresar(usuario, contraseña);
-            if (sesion.getTipoUsuario() == TipoUsuario.Administrador)
+            if (sesion.getTipoUsuario() == TipoUsuario.Administrador.toString())
             {
                 return "administrador";
             }

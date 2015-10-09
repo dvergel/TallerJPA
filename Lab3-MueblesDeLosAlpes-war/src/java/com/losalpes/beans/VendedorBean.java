@@ -12,7 +12,7 @@
 
 package com.losalpes.beans;
 
-import com.losalpes.entities.Experienciavendedor;
+import com.losalpes.entities.ExperienciaVendedor;
 import com.losalpes.entities.Vendedor;
 import com.losalpes.excepciones.OperacionInvalidaException;
 import com.losalpes.servicios.IServicioVendedoresMockLocal;
@@ -47,7 +47,7 @@ public class VendedorBean implements Serializable
     /**
      * Representa una nueva experiencia de vendedor
      */
-    private Experienciavendedor experiencia;
+    private ExperienciaVendedor experiencia;
 
     //-----------------------------------------------------------
     // Constructor
@@ -59,7 +59,7 @@ public class VendedorBean implements Serializable
     public VendedorBean()
     {
         vendedor=new Vendedor();
-        experiencia=new Experienciavendedor();
+        experiencia=new ExperienciaVendedor();
     }
 
     //-----------------------------------------------------------
@@ -97,7 +97,7 @@ public class VendedorBean implements Serializable
      * Devuelve el objeto actual de experiencia vendedor
      * @return experiencia Objeto de la experiencia del vendedor actual
      */
-    public Experienciavendedor getExperiencia()
+    public ExperienciaVendedor getExperiencia()
     {
         return experiencia;
     }
@@ -106,7 +106,7 @@ public class VendedorBean implements Serializable
      * Modifica la experiencia del vendedor actual
      * @param experiencia Nueva experiencia del vendedor
      */
-    public void setExperiencia(Experienciavendedor experiencia)
+    public void setExperiencia(ExperienciaVendedor experiencia)
     {
         this.experiencia = experiencia;
     }
@@ -125,7 +125,7 @@ public class VendedorBean implements Serializable
         {
             servicio.agregarVendedor(vendedor);
             vendedor=new Vendedor();
-            experiencia=new Experienciavendedor();
+            experiencia=new ExperienciaVendedor();
         }
         catch (OperacionInvalidaException ex)
         {
@@ -158,9 +158,9 @@ public class VendedorBean implements Serializable
      */
     public void agregarItemExperiencia()
     {
-        long id=vendedor.getExperienciavendedorList().size()+1;
+        long id=vendedor.getExperienciaVendedorList().size()+1;
         experiencia.setId(id);
         vendedor.setItemExperiencia(experiencia);
-        experiencia=new Experienciavendedor();
+        experiencia=new ExperienciaVendedor();
     }
 }

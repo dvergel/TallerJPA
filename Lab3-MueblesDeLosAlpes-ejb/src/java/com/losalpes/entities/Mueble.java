@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author de.vergel10
  */
 @Entity
-@Table(name = "MUEBLE", catalog = "", schema = "CSOF5302051520")
+@Table(name = "MUEBLE")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Mueble.findAll", query = "SELECT m FROM Mueble m"),
@@ -87,6 +87,25 @@ public class Mueble implements Serializable {
         this.id = id;
         this.referencia = referencia;
         this.seleccion = seleccion;
+    }
+    
+    /**
+     * Constructor de la clase. Inicializa los atributos con los valores que ingresan por parametro.
+     * @param referencia Referencia del mueble
+     * @param nombre Nombre del mueble
+     * @param descripcion Descripión del mueble
+     * @param tipo Tipo de mueble
+     * @param cantidad Cantidad de ejemplares
+     */
+    public Mueble(short referencia, String nombre, String descripcion, String tipo,Short cantidad,String imagen,BigDecimal precio)
+    {
+        this.referencia = referencia;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.tipo = tipo;
+        this.cantidad=cantidad;
+        this.imagen=imagen;
+        this.precio=precio;
     }
 
     public Short getId() {
