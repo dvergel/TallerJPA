@@ -11,12 +11,17 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -27,6 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author de.vergel10
  */
 @Entity
+@TableGenerator(name = "sequsuario", initialValue = 1, allocationSize = 1)
 @Table(name = "USUARIO")
 @XmlRootElement
 @NamedQueries({
@@ -48,6 +54,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Usuario implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "sequsuario")
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID")
@@ -64,7 +71,8 @@ public class Usuario implements Serializable {
     private String contrasena;
     @Size(max = 50)
     @Column(name = "TIPO_USUARIO")
-    private String tipoUsuario;
+    @Enumerated(EnumType.STRING)
+    private TipoUsuario tipoUsuario;
     @Size(max = 50)
     @Column(name = "NOMBRE_COMPLETO")
     private String nombreCompleto;
@@ -72,7 +80,8 @@ public class Usuario implements Serializable {
     private Long documento;
     @Size(max = 50)
     @Column(name = "TIPO_DOCUMENTO")
-    private String tipoDocumento;
+    @Enumerated(EnumType.STRING)
+    private TipoDocumento tipoDocumento;
     @Column(name = "TELEFONO_LOCAL")
     private Long telefonoLocal;
     @Column(name = "TELEFONO_CELULAR")
@@ -84,7 +93,8 @@ public class Usuario implements Serializable {
     private String direccion;
     @Size(max = 50)
     @Column(name = "PROFESION")
-    private String profesion;
+    @Enumerated(EnumType.STRING)
+    private Profesion profesion;
     @Size(max = 50)
     @Column(name = "CORREO")
     private String correo;
@@ -130,11 +140,11 @@ public class Usuario implements Serializable {
         this.contrasena = contrasena;
     }
 
-    public String getTipoUsuario() {
+    public TipoUsuario getTipoUsuario() {
         return tipoUsuario;
     }
 
-    public void setTipoUsuario(String tipoUsuario) {
+    public void setTipoUsuario(TipoUsuario tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
     }
 
@@ -154,11 +164,11 @@ public class Usuario implements Serializable {
         this.documento = documento;
     }
 
-    public String getTipoDocumento() {
+    public TipoDocumento getTipoDocumento() {
         return tipoDocumento;
     }
 
-    public void setTipoDocumento(String tipoDocumento) {
+    public void setTipoDocumento(TipoDocumento tipoDocumento) {
         this.tipoDocumento = tipoDocumento;
     }
 
@@ -194,11 +204,11 @@ public class Usuario implements Serializable {
         this.direccion = direccion;
     }
 
-    public String getProfesion() {
+    public Profesion getProfesion() {
         return profesion;
     }
 
-    public void setProfesion(String profesion) {
+    public void setProfesion(Profesion profesion) {
         this.profesion = profesion;
     }
 

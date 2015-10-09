@@ -12,12 +12,17 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -28,6 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author de.vergel10
  */
 @Entity
+@TableGenerator(name = "seqmueble", initialValue = 1, allocationSize = 1)
 @Table(name = "MUEBLE")
 @XmlRootElement
 @NamedQueries({
@@ -44,6 +50,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Mueble implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "seqmueble")
     @Basic(optional = false)
     @NotNull
     @Column(name = "ID")
@@ -60,7 +67,8 @@ public class Mueble implements Serializable {
     private String descripcion;
     @Size(max = 50)
     @Column(name = "TIPO")
-    private String tipo;
+    @Enumerated(EnumType.STRING)
+    private TipoMueble tipo;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "PRECIO")
     private BigDecimal precio;
@@ -97,7 +105,7 @@ public class Mueble implements Serializable {
      * @param tipo Tipo de mueble
      * @param cantidad Cantidad de ejemplares
      */
-    public Mueble(short referencia, String nombre, String descripcion, String tipo,Short cantidad,String imagen,BigDecimal precio)
+    public Mueble(short referencia, String nombre, String descripcion, TipoMueble tipo,Short cantidad,String imagen,BigDecimal precio)
     {
         this.referencia = referencia;
         this.nombre = nombre;
@@ -140,11 +148,11 @@ public class Mueble implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public String getTipo() {
+    public TipoMueble getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(TipoMueble tipo) {
         this.tipo = tipo;
     }
 

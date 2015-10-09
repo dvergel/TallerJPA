@@ -319,7 +319,7 @@ public class RegistroBean implements Serializable
         {
             if(usuario.getTipoUsuario() == null)
             {
-                usuario.setTipoUsuario(TipoUsuario.Cliente.toString());
+                usuario.setTipoUsuario(TipoUsuario.Cliente);
             }
             usuarioServices.registrar(usuario);          
             mensaje = "Su cuenta ha sido creada exitosamente.";
