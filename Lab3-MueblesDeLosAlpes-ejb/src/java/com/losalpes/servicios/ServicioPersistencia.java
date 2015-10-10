@@ -11,8 +11,10 @@
 
 package com.losalpes.servicios;
 
+import com.losalpes.dto.MuebleVendido;
 import com.losalpes.excepciones.OperacionInvalidaException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -143,5 +145,20 @@ public class ServicioPersistencia implements IServicioPersistenciaMockLocal,ISer
     
     protected EntityManager getEntityManager() {
         return em;
+    }
+
+    @Override
+    public List<MuebleVendido> getMueblesMasVendidos() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("select distinct(v.producto), COUNT(v.comprador), m.nombre ");
+        sb.append("from registro_venta v join mueble m on m.id = v.producto ");
+        sb.append("group by v.producto , m.nombre order by count(v.comprador) desc");
+        Query query = em.createNativeQuery(sb.toString());
+        List<Object[]> result = query.setMaxResults(3).getResultList();
+        List<MuebleVendido> muebles = new ArrayList<>();
+        for (Object[] o: result) {
+            muebles.add(new MuebleVendido((int)o[0], (long)o[1], (String)o[2]));
+        }
+        return muebles;
     }
 }

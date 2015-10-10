@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!--
+    Document   : clientes
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/main-template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:param name="titulo" value="Top ventas" />
+    <ui:define name="body">
+        <h:form>
+            <h:outputText id="linkHeader"
+                          value="Top ventas" style="color:white"/>
+        </h:form>    
+        
+        <h:form>
+            <h:panelGroup>
+                <h2>Top Ventas</h2>
+                <!-- Se crea una tabla donde se presentan los muebles del sistema -->
+                <p:dataTable id="data" 
+                             value="#{topVentasBean.mueblesVendidos}" 
+                             var="mueble"
+                             paginator="true" 
+                             rows="5">
+                    <p:column>
+                        <f:facet name="header">
+                            Id Mueble
+                        </f:facet>
+                        <h:outputText value="#{file.documento}"/>
+                    </p:column>
+                </p:dataTable>
+            </h:panelGroup>    
+        </h:form>
+
+        <h:form>
+
+            <!-- Se establecen las propiedades para el panel popup de error-->
+            <p:dialog id="popupDiv" rendered="true" visible="#{registroBean.mostrarVentana}" modal="true" height="100">
+
+                <f:facet name="header">
+                        <h:outputText value="Mensajes de Usuario"/>
+                </f:facet>
+                    <h:panelGroup>
+                        <h:panelGrid cellpadding="0" columns="2" style="background-position: center"
+                                     cellspacing="10" styleClass="popupModalBody">
+                            <p:graphicImage url="./resources/img/graphics/warning.png"/>
+                            <h:outputText
+                                value="#{registroBean.mensaje}"/>
+                        </h:panelGrid>
+                        <h:panelGroup style="vertical-align: middle;background: transparent">
+                            <div align="center">
+                                <h:commandButton id="closeModal"
+                                                 actionListener="#{registroBean.cerrarVentana}"
+                                                 value="Cerrar" style="z-index:2;"/>
+                            </div>
+                        </h:panelGroup>
+                    </h:panelGroup>
+            </p:dialog>
+
+        </h:form>
+    </ui:define>
+
+
+</ui:composition>

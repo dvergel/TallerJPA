@@ -12,10 +12,13 @@
 
 package com.losalpes.entities;
 
+import javax.persistence.Embeddable;
+
 /**
  * Clase de enumeración con los tipos de usuarios en el sistema
  * 
  */
+@Embeddable
 public enum TipoUsuario
 {
     Administrador,Cliente

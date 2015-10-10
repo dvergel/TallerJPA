@@ -12,10 +12,13 @@
 
 package com.losalpes.entities;
 
+import javax.persistence.Embeddable;
+
 /**
  * Clase de enumeración con las posibles profesiones en el sistema
  * 
  */
+@Embeddable
 public enum Profesion
 {
     Abogado,Arquitecto,Administrador,Diseñador,Economista,Estudiante,Médico,Ingeniero

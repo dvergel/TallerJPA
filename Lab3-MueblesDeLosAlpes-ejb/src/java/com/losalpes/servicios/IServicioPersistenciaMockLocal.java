@@ -12,6 +12,7 @@
 
 package com.losalpes.servicios;
 
+import com.losalpes.dto.MuebleVendido;
 import com.losalpes.excepciones.OperacionInvalidaException;
 import java.util.List;
 import java.util.Map;
@@ -75,5 +76,7 @@ public interface IServicioPersistenciaMockLocal
      * @return List<Object> Resultado de la consulta.
      */
     public List<Object> findNamedQueryRange(final String queryName, final Map<String, Object> params,final int firstResult, final int maxResults);
+
+    public List<MuebleVendido> getMueblesMasVendidos();
     
 }

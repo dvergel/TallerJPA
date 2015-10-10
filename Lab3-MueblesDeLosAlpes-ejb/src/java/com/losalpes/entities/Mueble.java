@@ -65,7 +65,7 @@ public class Mueble implements Serializable {
     @Size(max = 50)
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @Size(max = 50)
+    
     @Column(name = "TIPO")
     @Enumerated(EnumType.STRING)
     private TipoMueble tipo;

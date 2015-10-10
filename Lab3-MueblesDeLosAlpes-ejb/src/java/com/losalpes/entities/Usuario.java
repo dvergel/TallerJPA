@@ -69,7 +69,7 @@ public class Usuario implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "CONTRASENA")
     private String contrasena;
-    @Size(max = 50)
+    
     @Column(name = "TIPO_USUARIO")
     @Enumerated(EnumType.STRING)
     private TipoUsuario tipoUsuario;
@@ -78,7 +78,7 @@ public class Usuario implements Serializable {
     private String nombreCompleto;
     @Column(name = "DOCUMENTO")
     private Long documento;
-    @Size(max = 50)
+    
     @Column(name = "TIPO_DOCUMENTO")
     @Enumerated(EnumType.STRING)
     private TipoDocumento tipoDocumento;
@@ -91,7 +91,7 @@ public class Usuario implements Serializable {
     @Size(max = 50)
     @Column(name = "DIRECCION")
     private String direccion;
-    @Size(max = 50)
+    
     @Column(name = "PROFESION")
     @Enumerated(EnumType.STRING)
     private Profesion profesion;
@@ -99,7 +99,7 @@ public class Usuario implements Serializable {
     @Column(name = "CORREO")
     private String correo;
     @Column(name = "SELECCION")
-    private Short seleccion;
+    private boolean seleccion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario", fetch = FetchType.LAZY)
     private List<RegistroVenta> registroVentaList;
 
@@ -220,11 +220,11 @@ public class Usuario implements Serializable {
         this.correo = correo;
     }
 
-    public Short getSeleccion() {
+    public boolean getSeleccion() {
         return seleccion;
     }
 
-    public void setSeleccion(Short seleccion) {
+    public void setSeleccion(boolean seleccion) {
         this.seleccion = seleccion;
     }
 

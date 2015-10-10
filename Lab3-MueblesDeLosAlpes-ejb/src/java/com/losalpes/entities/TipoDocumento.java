@@ -12,10 +12,13 @@
 
 package com.losalpes.entities;
 
+import javax.persistence.Embeddable;
+
 /**
  * Clase de enumeración con los tipos de muebles en el sistema
  * 
  */
+@Embeddable
 public enum TipoDocumento
 {
     CC,TarjetaIdentidad

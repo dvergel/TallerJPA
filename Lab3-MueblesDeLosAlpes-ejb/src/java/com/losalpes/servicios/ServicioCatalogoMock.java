@@ -11,6 +11,7 @@
 
 package com.losalpes.servicios;
 
+import com.losalpes.dto.MuebleVendido;
 import com.losalpes.entities.Mueble;
 import com.losalpes.excepciones.OperacionInvalidaException;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.Query;
 
 /**
  * Implementacion de los servicios del catálogo de muebles que se le prestan al sistema.
@@ -118,6 +120,13 @@ public class ServicioCatalogoMock implements IServicioCatalogoMockRemote,IServic
     public List<Mueble> darMuebles()
     {
         return persistencia.findAll(Mueble.class);
+    }
+
+    @Override
+    public List<MuebleVendido> getMueblesMasVendidos() {
+        
+        return persistencia.getMueblesMasVendidos();
+
     }
 
 }

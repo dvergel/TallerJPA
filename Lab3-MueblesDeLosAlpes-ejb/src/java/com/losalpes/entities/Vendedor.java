@@ -67,7 +67,7 @@ public class Vendedor implements Serializable {
     @Size(max = 50)
     @Column(name = "FOTO")
     private String foto;
-    @OneToMany(mappedBy = "vendedorId", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "vendedor", fetch = FetchType.LAZY)
     private List<ExperienciaVendedor> experienciavendedorList;
 
     public Vendedor() {

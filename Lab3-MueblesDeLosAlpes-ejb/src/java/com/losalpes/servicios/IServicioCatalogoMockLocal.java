@@ -12,6 +12,7 @@
 
 package com.losalpes.servicios;
 
+import com.losalpes.dto.MuebleVendido;
 import com.losalpes.entities.Mueble;
 import java.util.List;
 
@@ -45,5 +46,7 @@ public interface IServicioCatalogoMockLocal
      * @param id Identificador único del mueble
      */
     public void removerEjemplarMueble(long id);
+
+    public List<MuebleVendido> getMueblesMasVendidos();
 
 }
